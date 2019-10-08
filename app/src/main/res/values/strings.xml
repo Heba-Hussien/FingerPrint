@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Hader</string>
+    <string name="hint_username">User name</string>
+    <string name="hint_password">Password</string>
+    <string name="action_Sign_up_here"><u>Sign up here</u></string>
+    <string name="action_sign_in">Log in</string>
+    <string name="no_account">Don\'t have an account? </string>
+    <string name="sign_up">Submit</string>
+    <string name="login">Login</string>
+    <string name="register">New Account</string>
+    <string name="name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="re_password">Renter Password</string>
+    <string name="address">Address</string>
+    <string name="department">Building</string>
+    <string name="text">Employee Attendance Management System</string>
+    <string name="welcome">Welcome</string>
+    <string name="attendance">Attendance</string>
+    <string name="departure">Departure</string>
+    <string name="finger">Fingerprint</string>
+    <string name="instructions">
+Place your fingertip on the Home button to verify your identity
+</string>
+    <string name="account">My Account</string>
+
+</resources>
