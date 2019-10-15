@@ -27,7 +27,7 @@ import retrofit2.Response;
 
 public class Home extends EasyLocationAppCompatActivity {
 Button Attendance,Departure;
-ImageButton Account;
+ImageButton Account,Archive,Notification;
 float distanceInMeters;
 ProgressDialog dialog;
 SessionManager sessionManager;
@@ -39,13 +39,15 @@ Intent intent;
         setContentView(R.layout.home);
         sessionManager=new SessionManager(Home.this);
         targetLocation = new Location("");
-         intent = new Intent(Home.this, FingerPrint.class);
+        intent = new Intent(Home.this, FingerPrint.class);
+
         Attendance=findViewById(R.id.attendance_btn);
         Attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 requestUserLocation();
                 intent.putExtra("FingrtPrintKind","Attendance");
+               // startActivity(intent);
             }
         });
 
@@ -60,6 +62,10 @@ Intent intent;
 
             }
         });
+        if (!sessionManager.IsAttendance()){
+
+        Departure.setVisibility(View.INVISIBLE);
+        }
 
 
         Account=findViewById(R.id._1_btn);
@@ -70,6 +76,26 @@ Intent intent;
                 startActivity(intent);
             }
         });
+
+
+        Archive=findViewById(R.id._2_btn);
+        Archive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Home.this, Archive.class);
+                startActivity(intent);
+            }
+        });
+
+        Notification=findViewById(R.id._3_btn);
+        Notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Home.this, Notification.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 

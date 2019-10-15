@@ -40,8 +40,9 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     private Context context;
     private String FingerPrintType;
     SessionManager sessionManager;
-
-
+    String Late;
+    int H,M;
+    String formattedDate ,formattedhour;
     public FingerprintHandler(Context mContext, String fingerPrintType)
     {
 
@@ -101,23 +102,76 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
         final Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = df.format(c);
+        formattedDate = df.format(c);
         Log.e("Date",formattedDate);
 
         SimpleDateFormat hf = new SimpleDateFormat("HH:mm aa");
-        String formattedhour = hf.format(c);
+        String hour = hf.format(c);
+        formattedhour="";
 
         try {
             final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-            final Date dateObj = sdf.parse(formattedhour);
+            final Date dateObj = sdf.parse(hour);
             formattedhour= new SimpleDateFormat("K:mm").format(dateObj);
         } catch (final ParseException e) {
             e.printStackTrace();
         }
         Log.e("Date",formattedhour);
+         H= Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+         M= Calendar.getInstance().get(Calendar.MINUTE);
+        if (FingerPrintType.equals("Attendance")) {
+            if (!sessionManager.IsAttendance()) {
+                if (H >= 8) {
+                    if(M>0){
+                    FingerPrintType = "Late attendance";
+                    Late = (H - 8) + ":" + M;
+                    sessionManager.Attendance();
+                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsAttendance());
+                    //SendData();
+                }}
+                else {
+                    sessionManager.Attendance();
+                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsAttendance());
+                 //   SendData();
+                }
 
+            } else {
+                Toast.makeText(context, "You have already record your attendance before", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        ////////////////////////////////////////////انصراف///////////////////
+        else if (FingerPrintType.equals("Departure")){
+            if (!sessionManager.IsDeparture()) {
+
+                if (H <3) {
+                    if(M<30){
+                        int n1=60-M;
+                        int n2=13-H;
+                        Late=n2+":"+n1;
+
+                    FingerPrintType = "Early departure";
+                    sessionManager.Departure();
+                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsDeparture());
+                   SendData();
+                        }
+
+                } else {
+                    sessionManager.Departure();
+                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsDeparture());
+                  SendData();
+                }
+
+            } else {
+                Toast.makeText(context, "You have already record your Departure before", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(context, "Something is Wrong , sorry try again ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void SendData(){
         MyAPI myAPI = GlobalFunctions.getAppRetrofit(context).create(MyAPI.class);
-
         Call<BasicResponse> call = myAPI.AddFingerPrintِ(
                 FingerPrintType,
                 formattedDate,
@@ -161,7 +215,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
             }
         });
-
     }
 
 }

@@ -19,9 +19,12 @@
     <string name="attendance">Attendance</string>
     <string name="departure">Departure</string>
     <string name="finger">Fingerprint</string>
-    <string name="instructions">
-Place your fingertip on the Home button to verify your identity
-</string>
+    <string name="instructions">Place your fingertip on the Home button to verify your identity</string>
     <string name="account">My Account</string>
+    <string name="archive">Archive</string>
+    <string name="notification">Notifications</string>
+
+    <string name="late">Late</string>
+    <string name="left_early">Left Early</string>
 
 </resources>

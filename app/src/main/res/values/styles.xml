@@ -28,7 +28,7 @@
 
     <style name="myToolbarTheme"  parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         ....
-        <item name="colorControlNormal">@color/color13</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="android:background">@color/color13</item>
         <item name="android:textColor">@color/white</item>
     </style>

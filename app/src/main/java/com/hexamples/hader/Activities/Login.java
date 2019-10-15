@@ -1,7 +1,14 @@
 package com.hexamples.hader.Activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +23,8 @@ import com.hexamples.hader.R;
 import com.hexamples.hader.Modules.BasicResponse;
 import com.hexamples.hader.SessionManager;
 
+import java.util.UUID;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,7 +34,8 @@ public class Login extends AppCompatActivity {
     TextView CreateAccount;
     SessionManager sessionManager;
     Button Login;
-
+    String deviceId;
+    String subscriberId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,14 +43,9 @@ public class Login extends AppCompatActivity {
         sessionManager=new SessionManager(Login.this);
         Username=findViewById(R.id.Username);
         Password=findViewById(R.id._Password);
-//        CreateAccount= findViewById(R.id.sign_txt);
-//        CreateAccount.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent i = new Intent(Login.this, SignUp.class);
-//                startActivity(i);
-//                finish();
-//            }
-//        });
+        GetAndroidId();
+
+        // Toast.makeText(this, deviceId+subscriberId, Toast.LENGTH_SHORT).show();
         Login =findViewById(R.id._login_btn);
         Login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -51,7 +56,8 @@ public class Login extends AppCompatActivity {
 
                     Call<BasicResponse> call = myAPI.login(
                             Username.getText().toString(),
-                            Password.getText().toString()
+                            Password.getText().toString(),
+                            deviceId + subscriberId
                     );
                     call.enqueue(new Callback<BasicResponse>() {
                         @Override
@@ -116,6 +122,54 @@ public class Login extends AppCompatActivity {
 
         return valid;
     }
+
+    public void GetAndroidId() {
+        final String PREFS_NAME = "GetAndroidId_MyPrefsFile";
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        if (settings.getBoolean("my_first_time", true)) {
+            Log.e("Comments", "First time");
+            String uuid = UUID.randomUUID().toString();
+            settings.edit().putString("uuid", uuid).commit();
+            settings.edit().putBoolean("my_first_time", false).commit();
+        }
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        String uuid = settings.getString("uuid", UUID.randomUUID().toString());
+        deviceId = android_id + "_" + uuid;
+
+        Log.e("deviceId", "" + deviceId);
+
+//
+//        TelephonyManager telephonyManager= (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//
+//        /*
+//         * getDeviceId() function Returns the unique device ID.
+//         * for example,the IMEI for GSM and the MEID or ESN for CDMA phones.
+//         */
+//        if (ActivityCompat.checkSelfPermission(Login.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+////            String deviceId = telephonyManager.getDeviceId();
+//
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //  public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//
+//        deviceId = telephonyManager.getDeviceId();
+//        /*
+//         * getSubscriberId() returns the unique subscriber ID,
+//         * For example, the IMSI for a GSM phone.
+//         */
+//        subscriberId = telephonyManager.getSubscriberId();
+//
+//
+//        Log.e("ttt",deviceId+subscriberId);
+//        // Toast.makeText(MainActivity.this, imeistring+imsistring, Toast.LENGTH_SHORT).show();
+
+    }
+
 
 }
 

@@ -16,9 +16,9 @@ public class SessionManager {
     private static final String Password = "Password";
     private static final String User_name = "user_name";
     private static final String Address = "address";
-
-
-
+    private static final String DayDate = "10-10-2019";
+    private static final String IsAttendance = "attendance";
+    private static final String IsDeparture = "departure";
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -84,14 +84,10 @@ public class SessionManager {
         return pref.getString(Password, "");
     }
 
-
-
-
     public void ClearAllData() {
         editor.clear();
         editor.commit();
     }
-
 
     public void setUser_name(String user_name) {
         editor.putString(User_name, user_name);
@@ -108,6 +104,42 @@ public class SessionManager {
     }
     public String getAddress() {
         return pref.getString(Address, "");
+    }
+
+
+
+    public void setDayDate(String dayDate) {
+        editor.putString(DayDate, dayDate);
+        editor.commit();
+    }
+    public String getDayDate() {
+        return pref.getString(DayDate, "");
+    }
+
+
+    public void NotAttendance() {
+        editor.putBoolean(IsAttendance, false);
+        editor.commit();
+    }
+    public void Attendance() {
+        editor.putBoolean(IsAttendance, true);
+        editor.commit();
+    }
+    public boolean IsAttendance() {
+        return pref.getBoolean(IsAttendance, false);
+    }
+
+
+    public void NotDeparture() {
+        editor.putBoolean(IsDeparture, false);
+        editor.commit();
+    }
+    public void Departure() {
+        editor.putBoolean(IsDeparture, true);
+        editor.commit();
+    }
+    public boolean IsDeparture() {
+        return pref.getBoolean(IsDeparture, false);
     }
 
 

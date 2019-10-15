@@ -2,6 +2,7 @@ package com.hexamples.hader.Activities;
 
 import android.Manifest;
 import android.app.KeyguardManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
@@ -12,9 +13,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.hexamples.hader.FingerprintHandler;
 import com.hexamples.hader.R;
 import java.io.IOException;
@@ -42,17 +44,46 @@ public class FingerPrint extends AppCompatActivity {
     private FingerprintManager.CryptoObject cryptoObject;
     private FingerprintManager fingerprintManager;
     private KeyguardManager keyguardManager;
+    ImageButton Archive,Notification,Account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.finger_print);
-        Toolbar toolbar =  findViewById(R.id.finger_toolbar);
+        toolbar =  findViewById(R.id.finger_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+        Account=findViewById(R.id._1_btn);
+        Account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(FingerPrint.this, MyAccount.class);
+                startActivity(intent);
+            }
+        });
+
+
+        Archive=findViewById(R.id._2_btn);
+        Archive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(FingerPrint.this, Archive.class);
+                startActivity(intent);
+            }
+        });
+
+        Notification=findViewById(R.id._3_btn);
+        Notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(FingerPrint.this, Notification.class);
+                startActivity(intent);
+            }
+        });
 
     // or higher before executing any fingerprint-related code
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
