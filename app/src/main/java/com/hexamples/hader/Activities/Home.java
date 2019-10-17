@@ -21,6 +21,9 @@ import com.hexamples.hader.Modules.EmployeeLocation;
 import com.hexamples.hader.MyAPI;
 import com.hexamples.hader.R;
 import com.hexamples.hader.SessionManager;
+
+import java.util.Calendar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +36,7 @@ ProgressDialog dialog;
 SessionManager sessionManager;
 private Location targetLocation;
 Intent intent;
+    int H,M;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +45,26 @@ Intent intent;
         targetLocation = new Location("");
         intent = new Intent(Home.this, FingerPrint.class);
 
-        Attendance=findViewById(R.id.attendance_btn);
+        H= Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        M= Calendar.getInstance().get(Calendar.MINUTE);
+     //  H=8;M=2;
+      // H=9;M=0;
+      // H=8;M=0;
+       //H=14;M=30;
+       //H=14;M=11;
+      // H=12;M=55;
+       Attendance=findViewById(R.id.attendance_btn);
         Attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestUserLocation();
+                if(H<8||(H==14&&M>30)||(H>=15)){
+                    Toast.makeText(Home.this, "this is not work time", Toast.LENGTH_SHORT).show();
+                }else{
+               requestUserLocation();
                 intent.putExtra("FingrtPrintKind","Attendance");
-               // startActivity(intent);
+                //startActivity(intent);
+                }
+
             }
         });
 
@@ -56,8 +73,13 @@ Intent intent;
         Departure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(H<8||(H==14&&M>30)||(H>=15)){
+                    Toast.makeText(Home.this, "this is not work time", Toast.LENGTH_SHORT).show();
+                }else{
                 requestUserLocation();
                 intent.putExtra("FingrtPrintKind","Departure");
+                   // startActivity(intent);
+                }
 
 
             }

@@ -27,6 +27,7 @@ import retrofit2.Response;
 public class Archive extends AppCompatActivity {
      Toolbar toolbar;
      Button button1,button2,button3,button4;
+     Button btn1,btn2;
      TextView textView1,textView2,textView3,textView4;
      ImageButton Account,Notification,Finger;
      Intent intent;
@@ -116,6 +117,27 @@ public class Archive extends AppCompatActivity {
                 intent.putExtra("kind","4");
                 startActivity(intent);
 
+
+            }
+        });
+
+
+        btn1=findViewById(R.id.btn1_1);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(Archive.this,VacationRequest.class);
+                startActivity(i);
+
+            }
+        });
+
+        btn2=findViewById(R.id.btn1_2);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(Archive.this,SubmitAbsentExcuse.class);
+                startActivity(i);
 
             }
         });

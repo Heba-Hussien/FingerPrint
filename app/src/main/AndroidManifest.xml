@@ -15,16 +15,23 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true">
-        <activity android:name=".Activities.Details"
+        android:supportsRtl="true"
+        >
+        <activity android:name=".Activities.SubmitAbsentExcuse"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".Activities.VacationRequest"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity
+            android:name=".Activities.Details"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".Activities.Notification"
             android:theme="@style/AppTheme.NoActionBar"
@@ -63,7 +70,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".Notify.BootReceiver"
+
+        <receiver
+            android:name=".Notify.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -72,12 +81,12 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".Notify.AlarmNotificationReceiver"/>
+        <receiver android:name=".Notify.AlarmNotificationReceiver" />
 
         <service
             android:name=".Notify.MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"

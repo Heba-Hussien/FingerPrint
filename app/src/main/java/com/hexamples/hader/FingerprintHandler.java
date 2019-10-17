@@ -119,20 +119,26 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         Log.e("Date",formattedhour);
          H= Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
          M= Calendar.getInstance().get(Calendar.MINUTE);
+
+      //  H=8;M=2;
+        // H=9;M=0;
+        //H=8;M=0;
+      //  H=14;M=30;
+        //H=14;M=11;
+        // H=12;M=55;
         if (FingerPrintType.equals("Attendance")) {
             if (!sessionManager.IsAttendance()) {
-                if (H >= 8) {
-                    if(M>0){
+                if (H >8||(H==8&& M>0)) {
                     FingerPrintType = "Late attendance";
                     Late = (H - 8) + ":" + M;
                     sessionManager.Attendance();
                     Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsAttendance());
-                    //SendData();
-                }}
-                else {
+                    SendData();
+                }
+                else if(H==8&&M==0) {
                     sessionManager.Attendance();
                     Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsAttendance());
-                 //   SendData();
+                  SendData();
                 }
 
             } else {
@@ -144,22 +150,18 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         else if (FingerPrintType.equals("Departure")){
             if (!sessionManager.IsDeparture()) {
 
-                if (H <3) {
-                    if(M<30){
-                        int n1=60-M;
-                        int n2=13-H;
-                        Late=n2+":"+n1;
+                if ((H<14)||(H==14&&M<30)) {
 
                     FingerPrintType = "Early departure";
                     sessionManager.Departure();
                     Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsDeparture());
                    SendData();
-                        }
 
-                } else {
+
+                } else if(H==14&&M==30) {
                     sessionManager.Departure();
                     Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsDeparture());
-                  SendData();
+                    SendData();
                 }
 
             } else {

@@ -37,6 +37,7 @@
         android:layout_height="0dp"
         android:layout_weight="3.5">
         <LinearLayout
+            android:layoutDirection="ltr"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center_horizontal"
@@ -192,6 +193,7 @@
                         android:layout_gravity="center_vertical"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
                     <Button
+                        android:id="@+id/btn1-1"
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/plus"
@@ -213,6 +215,7 @@
                         android:layout_gravity="center_vertical"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
                     <Button
+                        android:id="@+id/btn1-2"
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/plus"
