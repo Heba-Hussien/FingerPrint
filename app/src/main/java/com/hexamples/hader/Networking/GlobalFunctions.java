@@ -1,4 +1,4 @@
-package com.hexamples.hader;
+package com.hexamples.hader.Networking;
 
 import android.content.Context;
 

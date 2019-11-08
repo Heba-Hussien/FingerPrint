@@ -19,6 +19,17 @@ public class SessionManager {
     private static final String DayDate = "10-10-2019";
     private static final String IsAttendance = "attendance";
     private static final String IsDeparture = "departure";
+    ////******************************////////////////////
+    private static final String IsAttendanceNotify = "attendanceNotify";
+    private static final String IsDepartureNotify = "departureNotify";
+    private static final String WelcomeNotify = "welcomeNotify";
+    ///////////////////////////////////////////////////
+    private static final String NOneTime= "n_one_time";
+    private static final String NOneTxt = "n_one_txt";
+
+    private static final String NTwoTime= "n_two_time";
+    private static final String NTwoTxt = "n_two_txt";
+
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -88,6 +99,25 @@ public class SessionManager {
         editor.clear();
         editor.commit();
     }
+    public void Remove() {
+        editor.remove(User_name);
+        editor.remove(UserCode);
+        editor.remove(IS_LOGGED);
+
+        editor.remove(FullName);
+        editor.remove(Mobile);
+        editor.remove(Address);
+
+
+        editor.remove(Password);
+        editor.remove(NOneTxt);
+        editor.remove(NOneTime);
+
+        editor.remove(NTwoTxt);
+        editor.remove(NTwoTime);
+        editor.commit();
+
+    }
 
     public void setUser_name(String user_name) {
         editor.putString(User_name, user_name);
@@ -143,7 +173,78 @@ public class SessionManager {
     }
 
 
+    public void NotDepartureNotify() {
+        editor.putBoolean(IsDepartureNotify, false);
+        editor.commit();
+    }
+    public void DepartureNotify() {
+        editor.putBoolean(IsDepartureNotify, true);
+        editor.commit();
+    }
+    public boolean IsDepartureNotify() {
+        return pref.getBoolean(IsDepartureNotify, false);
+    }
 
+
+
+    public void NotAttendanceNotify() {
+        editor.putBoolean(IsAttendanceNotify, false);
+        editor.commit();
+    }
+    public void AttendanceNotify() {
+        editor.putBoolean(IsAttendanceNotify, true);
+        editor.commit();
+    }
+    public boolean IsAttendanceNotify() {
+        return pref.getBoolean(IsAttendanceNotify, false);
+    }
+
+
+    public void NotWelcomeNotify() {
+        editor.putBoolean(WelcomeNotify, false);
+        editor.commit();
+    }
+    public void WelcomeNotify() {
+        editor.putBoolean(WelcomeNotify, true);
+        editor.commit();
+    }
+    public boolean IsWelcomeNotify() {
+        return pref.getBoolean(WelcomeNotify, false);
+    }
+
+
+    public void setNOneTime(String nOneTime) {
+        editor.putString(NOneTime, nOneTime);
+        editor.commit();
+    }
+    public String getNOneTime() {
+        return pref.getString(NOneTime, "");
+    }
+
+    public void setNOneTxt(String nOneTxt) {
+        editor.putString(NOneTxt, nOneTxt);
+        editor.commit();
+    }
+    public String getNOneTxt() {
+        return pref.getString(NOneTxt, "");
+    }
+
+
+    public void setNTwoTime(String nTwoTime) {
+        editor.putString(NTwoTime, nTwoTime);
+        editor.commit();
+    }
+    public String getNTwoTime() {
+        return pref.getString(NTwoTime, "");
+    }
+
+    public void setNTwoTxt(String nTwoTxt) {
+        editor.putString(NTwoTxt, nTwoTxt);
+        editor.commit();
+    }
+    public String getNTwoTxt() {
+        return pref.getString(NTwoTxt, "");
+    }
 
 
 }

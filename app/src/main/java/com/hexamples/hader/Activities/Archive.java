@@ -1,9 +1,9 @@
 package com.hexamples.hader.Activities;
 
+import android.Manifest;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +12,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.gson.Gson;
-import com.hexamples.hader.GlobalFunctions;
-import com.hexamples.hader.Modules.BasicResponse;
+import com.hexamples.hader.Networking.GlobalFunctions;
 import com.hexamples.hader.Modules.Records;
-import com.hexamples.hader.MyAPI;
+import com.hexamples.hader.Networking.MyAPI;
 import com.hexamples.hader.R;
 import com.hexamples.hader.SessionManager;
 
@@ -122,6 +126,8 @@ public class Archive extends AppCompatActivity {
         });
 
 
+
+
         btn1=findViewById(R.id.btn1_1);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +147,16 @@ public class Archive extends AppCompatActivity {
 
             }
         });
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            btn2.setEnabled(false);
+            btn1.setEnabled(false);
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+        } else {
+            btn1.setEnabled(true);
+            btn2.setEnabled(true);
+        }
+
     }
 
     public void  GetData()
@@ -185,6 +201,19 @@ public class Archive extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                btn1.setEnabled(true);
+                btn2.setEnabled(true);
+
+            }
+        }
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

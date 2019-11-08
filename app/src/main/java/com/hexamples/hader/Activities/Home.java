@@ -3,7 +3,6 @@ package com.hexamples.hader.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,9 +15,9 @@ import com.akhgupta.easylocation.EasyLocationRequest;
 import com.akhgupta.easylocation.EasyLocationRequestBuilder;
 import com.google.android.gms.location.LocationRequest;
 import com.google.gson.Gson;
-import com.hexamples.hader.GlobalFunctions;
+import com.hexamples.hader.Networking.GlobalFunctions;
 import com.hexamples.hader.Modules.EmployeeLocation;
-import com.hexamples.hader.MyAPI;
+import com.hexamples.hader.Networking.MyAPI;
 import com.hexamples.hader.R;
 import com.hexamples.hader.SessionManager;
 
@@ -47,41 +46,41 @@ Intent intent;
 
         H= Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         M= Calendar.getInstance().get(Calendar.MINUTE);
-     //  H=8;M=2;
-      // H=9;M=0;
-      // H=8;M=0;
-       //H=14;M=30;
-       //H=14;M=11;
-      // H=12;M=55;
+
+
+        ////*******************************//////
+       //H=8;M=00;
+        ////*******************************//////
        Attendance=findViewById(R.id.attendance_btn);
         Attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(H<8||(H==14&&M>30)||(H>=15)){
+                if(H<8||(H==14&&M>35)||(H>=15)){
                     Toast.makeText(Home.this, "this is not work time", Toast.LENGTH_SHORT).show();
                 }else{
                requestUserLocation();
                 intent.putExtra("FingrtPrintKind","Attendance");
+                    ////*******************************//////
                 //startActivity(intent);
+                    ////*******************************//////
                 }
 
             }
         });
 
-
         Departure=findViewById(R.id.deperture_btn);
         Departure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(H<8||(H==14&&M>30)||(H>=15)){
+                if(H<8||(H==14&&M>35)||(H>=15)){
                     Toast.makeText(Home.this, "this is not work time", Toast.LENGTH_SHORT).show();
                 }else{
                 requestUserLocation();
                 intent.putExtra("FingrtPrintKind","Departure");
+                    ////*******************************//////
                    // startActivity(intent);
+                    ////*******************************//////
                 }
-
-
             }
         });
         if (!sessionManager.IsAttendance()){
@@ -89,14 +88,12 @@ Intent intent;
         Departure.setVisibility(View.INVISIBLE);
         }
 
-
         Account=findViewById(R.id._1_btn);
         Account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(Home.this, MyAccount.class);
-                startActivity(intent);
-            }
+                startActivity(intent); }
         });
 
 
@@ -131,18 +128,15 @@ Intent intent;
                 .setFallBackToLastLocationTime(3000)
                 .build();
         requestSingleLocationFix(easyLocationRequest);
-
     }
 
 
     @Override
     public void onLocationPermissionGranted() {
-
     }
 
     @Override
     public void onLocationPermissionDenied() {
-
     }
 
     @Override
@@ -150,7 +144,7 @@ Intent intent;
         dialog = new ProgressDialog(Home.this);
    if (location != null) {
 
-            // Toast.makeText(this, location.getLatitude() + " , " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+      // Toast.makeText(this, location.getLatitude() + " , " + location.getLongitude(), Toast.LENGTH_SHORT).show();
        dialog.setMessage("detect your location ,please wait...");
        dialog.show();
 

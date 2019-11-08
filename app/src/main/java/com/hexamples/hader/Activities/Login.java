@@ -1,24 +1,20 @@
 package com.hexamples.hader.Activities;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import com.google.gson.Gson;
-import com.hexamples.hader.GlobalFunctions;
-import com.hexamples.hader.MyAPI;
+import com.hexamples.hader.Networking.GlobalFunctions;
+import com.hexamples.hader.Networking.MyAPI;
 import com.hexamples.hader.R;
 import com.hexamples.hader.Modules.BasicResponse;
 import com.hexamples.hader.SessionManager;
@@ -53,7 +49,6 @@ public class Login extends AppCompatActivity {
                 else
                 {
                     MyAPI myAPI = GlobalFunctions.getAppRetrofit(Login.this).create(MyAPI.class);
-
                     Call<BasicResponse> call = myAPI.login(
                             Username.getText().toString(),
                             Password.getText().toString(),
@@ -137,36 +132,6 @@ public class Login extends AppCompatActivity {
         deviceId = android_id + "_" + uuid;
 
         Log.e("deviceId", "" + deviceId);
-
-//
-//        TelephonyManager telephonyManager= (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-//
-//        /*
-//         * getDeviceId() function Returns the unique device ID.
-//         * for example,the IMEI for GSM and the MEID or ESN for CDMA phones.
-//         */
-//        if (ActivityCompat.checkSelfPermission(Login.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-////            String deviceId = telephonyManager.getDeviceId();
-//
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //  public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//
-//        deviceId = telephonyManager.getDeviceId();
-//        /*
-//         * getSubscriberId() returns the unique subscriber ID,
-//         * For example, the IMSI for a GSM phone.
-//         */
-//        subscriberId = telephonyManager.getSubscriberId();
-//
-//
-//        Log.e("ttt",deviceId+subscriberId);
-//        // Toast.makeText(MainActivity.this, imeistring+imsistring, Toast.LENGTH_SHORT).show();
 
     }
 

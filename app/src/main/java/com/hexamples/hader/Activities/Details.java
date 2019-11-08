@@ -1,19 +1,20 @@
 package com.hexamples.hader.Activities;
 
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.gson.Gson;
-import com.hexamples.hader.GlobalFunctions;
+import com.hexamples.hader.Networking.GlobalFunctions;
 import com.hexamples.hader.Modules.Item;
-import com.hexamples.hader.MyAPI;
+import com.hexamples.hader.Networking.MyAPI;
 import com.hexamples.hader.R;
 import com.hexamples.hader.SessionManager;
 

@@ -1,4 +1,4 @@
-package com.hexamples.hader;
+package com.hexamples.hader.Activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -9,16 +9,21 @@ import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.CancellationSignal;
-import android.support.v4.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hexamples.hader.Activities.Home;
-import com.hexamples.hader.Activities.Login;
 import com.hexamples.hader.Modules.BasicResponse;
+import com.hexamples.hader.Networking.GlobalFunctions;
+import com.hexamples.hader.Networking.MyAPI;
+import com.hexamples.hader.R;
+import com.hexamples.hader.SessionManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +45,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     private Context context;
     private String FingerPrintType;
     SessionManager sessionManager;
-    String Late;
+   int LateH,LateM;
     int H,M;
     String formattedDate ,formattedhour;
     public FingerprintHandler(Context mContext, String fingerPrintType)
@@ -49,7 +54,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         context = mContext;
         FingerPrintType=fingerPrintType;
         sessionManager=new SessionManager(context);
-
 
     }
 
@@ -72,7 +76,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         //I’m going to display the results of fingerprint authentication as a series of toasts.
         //Here, I’m creating the message that’ll be displayed if an error occurs//
 
-        Toast.makeText(context, "Authentication error\n" + errString, Toast.LENGTH_LONG).show();
+       // Toast.makeText(context, "Authentication error\n" + errString, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -120,25 +124,36 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
          H= Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
          M= Calendar.getInstance().get(Calendar.MINUTE);
 
-      //  H=8;M=2;
-        // H=9;M=0;
+      // H=8;M=2;
+       //H=9;M=45;
         //H=8;M=0;
-      //  H=14;M=30;
-        //H=14;M=11;
-        // H=12;M=55;
+      H=14;M=30;
+       // H=14;M=11;
+      //  H=12;M=20;
+
         if (FingerPrintType.equals("Attendance")) {
             if (!sessionManager.IsAttendance()) {
                 if (H >8||(H==8&& M>0)) {
                     FingerPrintType = "Late attendance";
-                    Late = (H - 8) + ":" + M;
-                    sessionManager.Attendance();
-                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsAttendance());
-                    SendData();
+                    if(H==8&&M>0){
+                        LateM=M;
+                        LateH=0;
+                    }
+                    else if(H>8)
+                    {
+                        LateH=H-8;
+                        LateM=M;
+                      //  Late=(H-8)+":"+M;
+                    }
+                    SendData(1);
+                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + LateH+":"+LateM + "===" + sessionManager.getUserId() + sessionManager.IsAttendance());
                 }
                 else if(H==8&&M==0) {
-                    sessionManager.Attendance();
-                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsAttendance());
-                  SendData();
+                 sessionManager.Attendance();
+                    LateH=0;
+                    LateM=0;
+                    SendData(1);
+                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" +  LateH+":"+LateM  + "===" + sessionManager.getUserId() + sessionManager.IsAttendance());
                 }
 
             } else {
@@ -147,21 +162,42 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         }
 
         ////////////////////////////////////////////انصراف///////////////////
+
         else if (FingerPrintType.equals("Departure")){
             if (!sessionManager.IsDeparture()) {
 
                 if ((H<14)||(H==14&&M<30)) {
-
                     FingerPrintType = "Early departure";
-                    sessionManager.Departure();
-                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsDeparture());
-                   SendData();
 
+                    if(H==14&&M<30){
+                        LateH=0;
+                        LateM=30-M;
+                       // Late="00:"+(30-M);
+                    } else if(H<14&&M==0) {
+                        LateH=14-H;
+                        LateM=30;
+                      //  Late=(14-H)+":"+(30);
+                    }else if(H<14&&M>0){
+                        if(M<=30){
+                            LateH=14-H;
+                            LateM=30-M;
+                        //  Late=(14-H)+":"+(30-M);
+                        }else if(M>30){
+                            LateH=13-H;
+                            LateM=90-M;
+                            //Late=(13-H)+":"+(90-M);
+                        }
+                    }
+                    SendData(2);
+                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" +  LateH+":"+LateM  + "===" + sessionManager.getUserId() + sessionManager.IsDeparture());
 
-                } else if(H==14&&M==30) {
-                    sessionManager.Departure();
-                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" + Late + "===" + sessionManager.getUserId() + sessionManager.IsDeparture());
-                    SendData();
+                } else if(H==14&&M>=30) {
+                 sessionManager.Departure();
+                    LateH=0;
+                    LateM=0;
+                    SendData(2);
+                    Log.e("data", FingerPrintType + "===" + formattedDate + "===" + M + "===" + H + "===" +  LateH+":"+LateM  + "===" + sessionManager.getUserId() + sessionManager.IsDeparture());
+
                 }
 
             } else {
@@ -172,49 +208,40 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         }
     }
 
-    public void SendData(){
+    public void SendData(final int num){
         MyAPI myAPI = GlobalFunctions.getAppRetrofit(context).create(MyAPI.class);
         Call<BasicResponse> call = myAPI.AddFingerPrintِ(
                 FingerPrintType,
                 formattedDate,
                 formattedhour,
-                sessionManager.getUserId()
-
+                sessionManager.getUserId(),
+                "1",
+                LateH+"",
+                LateM+""
         );
         call.enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                // progressDialog.dismiss();
                 if (response != null) {
                     if (response.body() != null) {
-
                         if(!response.body().getStatus().equals("0")) {
                             Log.e("", "Response >> " + new Gson().toJson(response.body()));
+                            if(num==1){
+                                sessionManager.Attendance();
+                            }else if(num==2){
+                                sessionManager.Departure();
+                            }
                             Toast.makeText(context,"Success!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, Home.class);
                             context. startActivity(intent);
                             ((Activity) context).finish();
-
-                        }
-                        else{
-                            Toast.makeText(context,response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Log.e("", "body === null");
-
-                    }
-                } else {
-                    Log.e("", "response === null");
-
-
-                }
+                        } else{ Toast.makeText(context,response.body().getMsg(), Toast.LENGTH_SHORT).show(); }
+                    } else { Log.e("", "body === null"); }
+                } else { Log.e("", "response === null"); }
             }
-
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
                 t.printStackTrace();
-                // progressDialog.dismiss();
-
             }
         });
     }

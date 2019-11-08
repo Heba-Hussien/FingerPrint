@@ -1,4 +1,4 @@
-package com.hexamples.hader;
+package com.hexamples.hader.Networking;
 
 
 
@@ -11,9 +11,15 @@ import com.hexamples.hader.Modules.Records;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -43,9 +49,11 @@ public interface MyAPI {
             @Query("Status") String Status,
             @Query("Day") String Day,
             @Query("Time") String Time,
-            @Query("Staff_ID") String Staff_ID
+            @Query("Staff_ID") String Staff_ID,
+            @Query("Buliding_ID") String Buliding_ID,
+            @Query("Hours") String Hours,
+            @Query("Min") String Min
     );
-
     @Headers("Content-Type: application/json")
     @GET("webservice/return-staff.php")
     Call<Employee> ReurnStuff(
@@ -94,4 +102,42 @@ public interface MyAPI {
             @Query("staff_ID") String staff_ID
     );
 
+
+
+
+    @Multipart
+    @POST("webservice/addexcuse.php")
+    Call<BasicResponse> upload_Excuse(
+            @Part MultipartBody.Part file
+    );
+
+
+    @Headers("Content-Type: application/json")
+    @GET("webservice/addexcuse1.php")
+    Call<BasicResponse>Absent_Excuse(
+            @Query("staff_ID") String staff_ID,
+            @Query("Build_ID") String Build_ID,
+            @Query("File_URL") String File_URL,
+            @Query("Type_Excuse") String Type_Excuse,
+            @Query("Excuse_Details") String Excuse_Details
+
+    );
+
+    @Multipart
+    @POST("webservice/addvacation.php")
+    Call<BasicResponse> upload_vacation(
+            @Part MultipartBody.Part file
+    );
+    @Headers("Content-Type: application/json")
+    @GET("webservice/addvacation1.php")
+    Call<BasicResponse>Vacation(
+            @Query("Staff_ID") String staff_ID,
+            @Query("Build_ID") String Build_ID,
+            @Query("File_URL") String File_URL,
+            @Query("Start_Date") String Start_Date,
+            @Query("End_Date") String End_Date,
+            @Query("Vacation_Subject") String Vacation_Subject,
+            @Query("Vacation_Details") String Vacation_Details
+
+    );
 }
